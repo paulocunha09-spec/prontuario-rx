@@ -275,7 +275,7 @@
 
     <footer class="mt-20 md:mt-24 flex flex-col md:flex-row justify-center items-center gap-6 md:gap-12">
         <button onclick="window.location.reload()" class="btn-luxury-secondary order-2 md:order-1">Limpar Página</button>
-        <button onclick="salvar()" class="btn-luxury-primary order-1 md:order-2">Salvar e Ir para Página 2</button>
+        <button id="btn_avancar" onclick="salvar()" class="btn-luxury-primary order-1 md:order-2">Salvar e Ir para Página 2</button>
     </footer>
 </div>
 
@@ -358,18 +358,11 @@
     }
 
     function salvar() {
-        const data = {};
-        document.querySelectorAll('input, select, textarea').forEach(el => {
-            if (el.type === 'radio') {
-                if (el.checked) data[el.name] = el.value;
-            } else if (el.id || el.name) {
-                data[el.id || el.name] = el.value;
-            }
-        });
-        localStorage.setItem('rx_data_p1', JSON.stringify(data));
-        window.location.href = 'Prontu%C3%A1rio%20-%20P%C3%A1gina%202.Html';
+        // Esta função agora apenas chama a função principal para evitar redundância
+        finalizarEnvioPaciente();
     }
 </script>
+
 <script>
     const S_URL = "https://script.google.com/macros/s/AKfycbw0334N0K0s3yZoSlDSohZ5OZSkFRDBm1lJpN3GSo3-lviFHuGVmvvJ_NFOATcFkxYk/exec";
 
@@ -390,19 +383,19 @@
             else if (el.id || el.name) { data[el.id || el.name] = el.value; }
         });
 
+        // Salva os dados localmente para uso na Página 2
+        localStorage.setItem('rx_data_p1', JSON.stringify(data));
+
         try {
             await fetch(S_URL, { method: 'POST', body: JSON.stringify(data), mode: 'no-cors' });
             
-            alert("Dados enviados com sucesso! Pressione OK para gerar seu PDF de comprovante.");
+            // Permite que o PDF seja salvo/impresso e depois redireciona
+            alert("Dados enviados com sucesso! Pressione OK para prosseguir.");
             window.print();
             
-            // Feedback de Sucesso para o Paciente
-            document.body.innerHTML = `
-                <div class="luxury-card text-center" style="margin-top:100px;">
-                    <h1 class="text-4xl gold-gradient-text mb-6">Recebido com Sucesso</h1>
-                    <p class="text-white opacity-70">Obrigado, ${nome.value}.<br>Seus dados foram enviados com segurança para a Dra. Rebeca Xavier.</p>
-                    <div class="mt-10 h-[1px] w-20 bg-[#C5A028] mx-auto opacity-50"></div>
-                </div>`;
+            // REDIRECIONAMENTO CORRIGIDO:
+            window.location.href = 'pagina2.html';
+            
         } catch (e) {
             alert("Erro ao enviar. Verifique sua conexão.");
             btn.innerText = originalText;
@@ -410,10 +403,10 @@
         }
     }
 
-    // Vincula a nova função ao botão original
+    // Vincula a função ao botão original
     document.addEventListener('DOMContentLoaded', () => {
         const btn = document.getElementById('btn_avancar') || document.querySelector('.btn-luxury-primary');
-        btn.innerText = "FINALIZAR E ENVIAR PRONTUÁRIO";
+        btn.innerText = "FINALIZAR E IR PARA PÁGINA 2";
         btn.setAttribute('onclick', 'finalizarEnvioPaciente()');
         btn.type = "button";
     });
