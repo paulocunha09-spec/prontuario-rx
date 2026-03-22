@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RX - Experience Premium | Página 1</title>
+    <title>RX - Experience Premium | Identificação</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -133,8 +133,6 @@
             font-weight: bold;
         }
 
-        @media (min-width: 768px) { .section-title { font-size: 1.6rem; letter-spacing: 0.35em; margin-bottom: 50px; } }
-
         .btn-luxury-primary {
             background: linear-gradient(135deg, var(--dourado-base), var(--dourado-brilho));
             color: #000;
@@ -145,9 +143,10 @@
             letter-spacing: 0.15em;
             cursor: pointer;
             width: 100%;
+            transition: transform 0.2s ease;
         }
 
-        @media (min-width: 768px) { .btn-luxury-primary { width: auto; padding: 20px 60px; } }
+        .btn-luxury-primary:active { transform: scale(0.98); }
 
         .btn-luxury-secondary {
             background: transparent;
@@ -162,14 +161,12 @@
             width: 100%;
         }
 
-        @media (min-width: 768px) { .btn-luxury-secondary { width: auto; padding: 18px 50px; } }
-
         select option { background-color: #111; color: white; }
 
         @media print {
-            body { background-color: #ffffff !important; color: #000000 !important; background-image: none !important; }
+            body { background-color: #ffffff !important; color: #000000 !important; background-image: none !important; padding: 0 !important; }
             button, footer, #status-message { display: none !important; }
-            .luxury-card { border: none !important; box-shadow: none !important; background: transparent !important; filter: none !important; backdrop-filter: none !important; margin: 0 !important; padding: 0 !important; }
+            .luxury-card { border: none !important; box-shadow: none !important; background: transparent !important; filter: none !important; backdrop-filter: none !important; margin: 0 !important; padding: 0 !important; max-width: 100% !important; }
             input, textarea, select { border: none !important; border-bottom: 1px solid #cccccc !important; color: #000000 !important; background: transparent !important; resize: none !important; }
             .gold-gradient-text { background: none !important; color: #000000 !important; -webkit-text-fill-color: #000000 !important; }
             label, span, p, div { color: #000000 !important; }
@@ -220,12 +217,12 @@
             <div class="md:col-span-2">
                 <label>Data de Nascimento</label>
                 <div class="flex gap-2">
-                    <select id="dia" class="flex-1" autocomplete="bday-day"></select>
-                    <select id="mes" class="flex-[2]" autocomplete="bday-month">
+                    <select id="dia" class="flex-1"></select>
+                    <select id="mes" class="flex-[2]">
                         <option value="">Mês</option>
                         <option value="Janeiro">Janeiro</option><option value="Fevereiro">Fevereiro</option><option value="Março">Março</option><option value="Abril">Abril</option><option value="Maio">Maio</option><option value="Junho">Junho</option><option value="Julho">Julho</option><option value="Agosto">Agosto</option><option value="Setembro">Setembro</option><option value="Outubro">Outubro</option><option value="Novembro">Novembro</option><option value="Dezembro">Dezembro</option>
                     </select>
-                    <select id="ano" class="flex-1" autocomplete="bday-year"></select>
+                    <select id="ano" class="flex-1"></select>
                 </div>
             </div>
             <div class="grid grid-cols-2 md:contents gap-4">
@@ -234,11 +231,11 @@
             </div>
             <div class="grid grid-cols-2 md:contents gap-4">
                 <div><label>Estado Civil</label><input type="text" id="p_estado_civil"></div>
-                <div><label>Profissão</label><input type="text" id="p_profissao" autocomplete="organization-title"></div>
+                <div><label>Profissão</label><input type="text" id="p_profissao"></div>
             </div>
-            <div class="md:col-span-2"><label>WhatsApp</label><input type="tel" id="input_whatsapp" autocomplete="tel"></div>
-            <div class="md:col-span-2"><label>E-mail Pessoal</label><input type="email" id="p_email" autocomplete="email"></div>
-            <div class="md:col-span-2"><label>Endereço</label><input type="text" id="p_endereco" autocomplete="street-address"></div>
+            <div class="md:col-span-2"><label>WhatsApp</label><input type="tel" id="input_whatsapp"></div>
+            <div class="md:col-span-2"><label>E-mail Pessoal</label><input type="email" id="p_email"></div>
+            <div class="md:col-span-2"><label>Endereço</label><input type="text" id="p_endereco"></div>
             <div class="grid grid-cols-2 md:contents gap-4">
                 <div class="md:col-span-1"><label>Nº</label><input type="text" id="p_numero"></div>
                 <div class="md:col-span-1"><label>Bairro</label><input type="text" id="p_bairro"></div>
@@ -274,12 +271,14 @@
     </section>
 
     <footer class="mt-20 md:mt-24 flex flex-col md:flex-row justify-center items-center gap-6 md:gap-12">
-        <button onclick="window.location.reload()" class="btn-luxury-secondary order-2 md:order-1">Limpar Página</button>
-        <button id="btn_avancar" onclick="salvar()" class="btn-luxury-primary order-1 md:order-2">Salvar e Ir para Página 2</button>
+        <button type="button" onclick="window.location.reload()" class="btn-luxury-secondary order-2 md:order-1">Limpar Página</button>
+        <button type="button" id="btn_avancar" class="btn-luxury-primary order-1 md:order-2">Finalizar e Ir para Página 2</button>
     </footer>
 </div>
 
 <script>
+    const S_URL = "https://script.google.com/macros/s/AKfycbw0334N0K0s3yZoSlDSohZ5OZSkFRDBm1lJpN3GSo3-lviFHuGVmvvJ_NFOATcFkxYk/exec";
+
     const masks = {
         cpf(v) { v = v.replace(/\D/g, ""); v = v.replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2"); return v; },
         rg(v) { v = v.replace(/\D/g, ""); v = v.replace(/(\d{7})(\d)/, "$1-$2"); return v; },
@@ -319,22 +318,24 @@
     function toggleInput(id, status) { const el = document.getElementById(id); if(el) { el.disabled = !status; if(!status) el.value = ""; } }
 
     function init() {
+        // Popula datas
         const d = document.getElementById('dia'); const a = document.getElementById('ano');
         d.innerHTML = '<option value="">Dia</option>'; for(let i=1; i<=31; i++) d.innerHTML += `<option value="${i}">${i}</option>`;
         a.innerHTML = '<option value="">Ano</option>'; for(let i=new Date().getFullYear(); i>=1910; i--) a.innerHTML += `<option value="${i}">${i}</option>`;
 
-        const cpfIn = document.getElementById('input_cpf');
-        cpfIn.addEventListener('input', e => {
+        // Mascaras
+        document.getElementById('input_cpf').addEventListener('input', e => {
             e.target.value = masks.cpf(e.target.value);
             const pure = e.target.value.replace(/\D/g, "");
             if(pure.length === 11) {
-                if(validateCPF(pure)) { cpfIn.classList.add('valid'); cpfIn.classList.remove('invalid'); }
-                else { cpfIn.classList.add('invalid'); cpfIn.classList.remove('valid'); }
-            } else { cpfIn.classList.remove('valid', 'invalid'); }
+                if(validateCPF(pure)) { e.target.classList.add('valid'); e.target.classList.remove('invalid'); }
+                else { e.target.classList.add('invalid'); e.target.classList.remove('valid'); }
+            } else { e.target.classList.remove('valid', 'invalid'); }
         });
         document.getElementById('input_rg').addEventListener('input', e => e.target.value = masks.rg(e.target.value));
         document.getElementById('input_whatsapp').addEventListener('input', e => e.target.value = masks.whatsapp(e.target.value));
 
+        // Renderiza Anamnese
         const anaCont = document.getElementById('anamnese-dinamica');
         anamnese.forEach(q => {
             let h = `<div class="flex flex-col gap-3 border-b border-white border-opacity-5 pb-6 md:border-none">
@@ -350,66 +351,59 @@
             h += `</div></div>`; anaCont.innerHTML += h;
         });
 
+        // Renderiza Patologias e Habitos
         const pCont = document.getElementById('patologia-container');
-        patologias.forEach((p, i) => { pCont.innerHTML += `<div class="flex justify-between items-center border-b border-white border-opacity-5 py-4"><span class="text-sm text-gray-400">${p}</span><div class="flex gap-8"><label class="custom-option"><input type="radio" name="p${i}" value="Sim"> Sim</label><label class="custom-option"><input type="radio" name="p${i}" value="Não" checked> Não</label></div></div>`; });
+        patologias.forEach((p, i) => { pCont.innerHTML += `<div class="flex justify-between items-center border-b border-white border-opacity-5 py-4"><span class="text-sm text-gray-400">${p}</span><div class="flex gap-8"><label class="custom-option"><input type="radio" name="patol_${i}" value="Sim"> Sim</label><label class="custom-option"><input type="radio" name="patol_${i}" value="Não" checked> Não</label></div></div>`; });
 
         const hCont = document.getElementById('habitos-container');
-        habitos.forEach((h, i) => { hCont.innerHTML += `<div class="flex justify-between items-center border-b border-white border-opacity-5 py-4"><span class="text-sm text-gray-400">${h}</span><div class="flex gap-8"><label class="custom-option"><input type="radio" name="h${i}" value="Sim"> Sim</label><label class="custom-option"><input type="radio" name="h${i}" value="Não" checked> Não</label></div></div>`; });
+        habitos.forEach((h, i) => { hCont.innerHTML += `<div class="flex justify-between items-center border-b border-white border-opacity-5 py-4"><span class="text-sm text-gray-400">${h}</span><div class="flex gap-8"><label class="custom-option"><input type="radio" name="habito_${i}" value="Sim"> Sim</label><label class="custom-option"><input type="radio" name="habito_${i}" value="Não" checked> Não</label></div></div>`; });
+
+        // Listener do Botão Final
+        document.getElementById('btn_avancar').addEventListener('click', finalizarPagina1);
     }
 
-    function salvar() {
-        // Esta função agora apenas chama a função principal para evitar redundância
-        finalizarEnvioPaciente();
-    }
-</script>
+    async function finalizarPagina1() {
+        const btn = document.getElementById('btn_avancar');
+        const nomeInput = document.getElementById('p_nome');
 
-<script>
-    const S_URL = "https://script.google.com/macros/s/AKfycbw0334N0K0s3yZoSlDSohZ5OZSkFRDBm1lJpN3GSo3-lviFHuGVmvvJ_NFOATcFkxYk/exec";
+        if(!nomeInput.value.trim()) {
+            alert("O preenchimento do Nome Completo é obrigatório.");
+            nomeInput.focus();
+            return;
+        }
 
-    async function finalizarEnvioPaciente() {
-        const btn = document.getElementById('btn_avancar') || document.querySelector('.btn-luxury-primary');
-        const originalText = btn.innerText;
-        
-        // Validação básica de nome
-        const nome = document.querySelector('input[name="paciente_nome"]') || document.getElementById('p_nome');
-        if(!nome.value) { alert("Por favor, preencha seu nome completo."); return; }
-
-        btn.innerText = "ENVIANDO PRONTUÁRIO...";
+        btn.innerText = "PROCESSANDO...";
         btn.disabled = true;
 
-        const data = { "Origem": "PACIENTE_P1" };
+        // Coleta de dados
+        const data = { "Origem": "PACIENTE_P1", "Timestamp": new Date().toISOString() };
         document.querySelectorAll('input, select, textarea').forEach(el => {
             if (el.type === 'radio') { if (el.checked) data[el.name || el.id] = el.value; }
             else if (el.id || el.name) { data[el.id || el.name] = el.value; }
         });
 
-        // Salva os dados localmente para uso na Página 2
+        // Salva para a próxima página
         localStorage.setItem('rx_data_p1', JSON.stringify(data));
 
+        // Envio para Planilha (sem travar o fluxo)
         try {
-            await fetch(S_URL, { method: 'POST', body: JSON.stringify(data), mode: 'no-cors' });
-            
-            // Permite que o PDF seja salvo/impresso e depois redireciona
-            alert("Dados enviados com sucesso! Pressione OK para prosseguir.");
-            window.print();
-            
-            // REDIRECIONAMENTO CORRIGIDO:
-            window.location.href = 'pagina2.html';
-            
-        } catch (e) {
-            alert("Erro ao enviar. Verifique sua conexão.");
-            btn.innerText = originalText;
-            btn.disabled = false;
-        }
-    }
+            fetch(S_URL, { method: 'POST', body: JSON.stringify(data), mode: 'no-cors' });
+        } catch(e) { console.warn("Erro de rede no envio."); }
 
-    // Vincula a função ao botão original
-    document.addEventListener('DOMContentLoaded', () => {
-        const btn = document.getElementById('btn_avancar') || document.querySelector('.btn-luxury-primary');
-        btn.innerText = "FINALIZAR E IR PARA PÁGINA 2";
-        btn.setAttribute('onclick', 'finalizarEnvioPaciente()');
-        btn.type = "button";
-    });
+        // Configura o redirecionamento pós-impressão
+        window.addEventListener('afterprint', () => {
+            window.location.href = 'pagina2.html';
+        }, { once: true });
+
+        // Dispara a impressão
+        setTimeout(() => {
+            window.print();
+            // Caso o navegador não suporte 'afterprint' ou o usuário cancele bruscamente,
+            // um fallback de segurança para redirecionar após 2 segundos pode ser útil:
+            setTimeout(() => { if(window.location.pathname.includes('index.html')) window.location.href = 'pagina2.html'; }, 2000);
+        }, 300);
+    }
 </script>
+
 </body>
 </html>
